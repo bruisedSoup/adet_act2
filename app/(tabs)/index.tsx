@@ -1,98 +1,135 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Colors } from '../../constants/theme';
+import RotatingText from '../../components/RotatingText';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+const { width } = Dimensions.get('window');
 
-export default function HomeScreen() {
+const Home = () => {
+  const insets = useSafeAreaInsets();
+  const orbSize = width > 400 ? 330 : 250;
+  const profileSize = orbSize - 30;
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <ScrollView
+      contentContainerStyle={[styles.container, { paddingTop: insets.top + 20 }]}
+      style={styles.scrollView}
+    >
+      <View style={styles.backgroundContainer}>
+        <View style={[styles.glow, { top: '20%', left: '10%', backgroundColor: 'rgba(139, 92, 246, 0.15)' }]} />
+        <View style={[styles.glow, { top: '60%', left: '70%', backgroundColor: 'rgba(59, 130, 246, 0.1)' }]} />
+      </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <View style={styles.heroSection}>
+        <View style={[styles.centerOrb, { width: orbSize, height: orbSize }]}>
+          <RotatingText text="Keep moving forward * " size={orbSize} />
+          <View style={[styles.profileWrapper, { width: profileSize, height: profileSize }]}>
+            <Image
+              source={require('@/assets/images/logo.png')}
+              style={styles.profileImg}
+              resizeMode="cover"
+            />
+          </View>
+        </View>
+
+        <View style={styles.heroContent}>
+          <Text style={styles.quoteText}>
+            the stars lies the path {'\n'}
+            <Text style={styles.dash}>----</Text> to your true potential
+          </Text>
+
+          <Text style={styles.heroDescription}>
+            Guided by the stars, the path to your true potential is illuminated.
+            Every step forward uncovers growth, learning, and endless possibilities.
+            Let this reflect the journey and aspirations toward reaching new heights.
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.bigNameContainer}>
+        <Text style={styles.bigName}>WAYV</Text>
+      </View>
+    </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  scrollView: {
+    backgroundColor: Colors.bg,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  container: {
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    minHeight: Dimensions.get('window').height - 100,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  backgroundContainer: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: -1,
+  },
+  glow: {
     position: 'absolute',
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    opacity: 0.5,
+  },
+  heroSection: {
+    alignItems: 'center',
+    gap: 40,
+  },
+  centerOrb: {
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileWrapper: {
+    borderRadius: 1000,
+    overflow: 'hidden',
+    backgroundColor: Colors.bg,
+  },
+  profileImg: {
+    width: '100%',
+    height: '100%',
+  },
+  heroContent: {
+    alignItems: 'center',
+  },
+  quoteText: {
+    fontSize: width > 400 ? 32 : 24,
+    fontFamily: 'Outfit-ExtraBold',
+    color: Colors.primary,
+    textAlign: 'center',
+    lineHeight: width > 400 ? 40 : 32,
+    textTransform: 'uppercase',
+  },
+  dash: {
+    color: Colors.accent,
+    opacity: 0.5,
+  },
+  heroDescription: {
+    color: Colors.secondary,
+    fontSize: 16,
+    fontFamily: 'Inter',
+    textAlign: 'center',
+    marginTop: 20,
+    maxWidth: 600,
+    lineHeight: 24,
+  },
+  bigNameContainer: {
+    position: 'absolute',
+    bottom: 20,
+    right: -20,
+    opacity: 0.1,
+    zIndex: -1,
+  },
+  bigName: {
+    fontSize: 120,
+    fontFamily: 'Outfit-ExtraBold',
+    color: Colors.primary,
   },
 });
+
+export default Home;
