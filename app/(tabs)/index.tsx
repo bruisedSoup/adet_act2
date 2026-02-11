@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity, BackHandler, Platform, Alert } from 'react-native';
+import { LogOut } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants/theme';
 import RotatingText from '../../components/RotatingText';
@@ -129,6 +129,16 @@ const styles = StyleSheet.create({
     fontSize: 120,
     fontFamily: 'Outfit-ExtraBold',
     color: Colors.primary,
+  },
+  exitButton: {
+    position: 'absolute',
+    right: 20,
+    zIndex: 10,
+    padding: 10,
+    backgroundColor: Colors.glassBg,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.glassBorder,
   },
 });
 
