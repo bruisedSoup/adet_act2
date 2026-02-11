@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity, BackHandler, Platform, Alert } from 'react-native';
-import { LogOut } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity, Platform, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants/theme';
 import RotatingText from '../../components/RotatingText';
@@ -9,6 +9,7 @@ const { width } = Dimensions.get('window');
 
 const Home = () => {
   const insets = useSafeAreaInsets();
+  const [hasOutline, setHasOutline] = useState(false);
   const orbSize = width > 400 ? 330 : 250;
   const profileSize = orbSize - 30;
 
@@ -22,7 +23,11 @@ const Home = () => {
         <View style={[styles.glow, { top: '60%', left: '70%', backgroundColor: 'rgba(59, 130, 246, 0.1)' }]} />
       </View>
 
-      <View style={styles.heroSection}>
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => setHasOutline(!hasOutline)}
+        style={[styles.heroSection, hasOutline && styles.heroOutline]}
+      >
         <View style={[styles.centerOrb, { width: orbSize, height: orbSize }]}>
           <RotatingText text="Keep moving forward * " size={orbSize} />
           <View style={[styles.profileWrapper, { width: profileSize, height: profileSize }]}>
@@ -46,7 +51,7 @@ const Home = () => {
             Let this reflect the journey and aspirations toward reaching new heights.
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.bigNameContainer}>
         <Text style={styles.bigName}>WAYV</Text>
@@ -79,6 +84,16 @@ const styles = StyleSheet.create({
   heroSection: {
     alignItems: 'center',
     gap: 40,
+    padding: 20,
+    borderRadius: 30,
+  },
+  heroOutline: {
+    borderWidth: 2,
+    borderColor: Colors.accent,
+    shadowColor: Colors.accentGlow,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 20,
   },
   centerOrb: {
     position: 'relative',
@@ -129,16 +144,6 @@ const styles = StyleSheet.create({
     fontSize: 120,
     fontFamily: 'Outfit-ExtraBold',
     color: Colors.primary,
-  },
-  exitButton: {
-    position: 'absolute',
-    right: 20,
-    zIndex: 10,
-    padding: 10,
-    backgroundColor: Colors.glassBg,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
   },
 });
 
